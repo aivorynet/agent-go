@@ -1,0 +1,38 @@
+image: golang:1.21
+
+stages:
+  - lint
+  - test
+  - build
+
+variables:
+  GOPATH: $CI_PROJECT_DIR/.go
+
+cache:
+  paths:
+    - .go/pkg/mod/
+
+before_script:
+  - mkdir -p .go
+  - export PATH=$PATH:$GOPATH/bin
+
+lint:
+  stage: lint
+  script:
+    - go vet ./...
+
+test:
+  stage: test
+  script:
+    - go test -v -race ./...
+
+build:
+  stage: build
+  script:
+    - go build ./...
+  only:
+    - main
+    - tags
+
+# Note: Go modules are automatically published via GOPROXY when tags are pushed to public repos.
+# No explicit publish step needed - tagging the repo is sufficient for Go module distribution.
