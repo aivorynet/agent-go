@@ -14,7 +14,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/ilscipio/aivory-monitor/agent-go/pkg/agent"
+	"github.com/aivorynet/agent-go/pkg/agent"
 )
 
 // UserContext is a helper struct to test object capture.

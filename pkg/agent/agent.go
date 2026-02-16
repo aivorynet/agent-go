@@ -9,8 +9,8 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/ilscipio/aivory-monitor/agent-go/pkg/capture"
-	"github.com/ilscipio/aivory-monitor/agent-go/pkg/transport"
+	"github.com/aivorynet/agent-go/pkg/capture"
+	"github.com/aivorynet/agent-go/pkg/transport"
 )
 
 // Agent is the main AIVory Monitor agent.

@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/ilscipio/aivory-monitor/agent-go/pkg/capture"
+	"github.com/aivorynet/agent-go/pkg/capture"
 )
 
 // Connection represents a WebSocket connection to the AIVory backend.

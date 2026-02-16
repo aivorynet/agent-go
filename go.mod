@@ -1,4 +1,4 @@
-module github.com/ilscipio/aivory-monitor/agent-go
+module github.com/aivorynet/agent-go
 
 go 1.21
 
