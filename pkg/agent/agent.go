@@ -9,16 +9,18 @@ import (
 	"sync"
 	"syscall"
 
+	"github.com/aivorynet/agent-go/pkg/breakpoint"
 	"github.com/aivorynet/agent-go/pkg/capture"
 	"github.com/aivorynet/agent-go/pkg/transport"
 )
 
 // Agent is the main AIVory Monitor agent.
 type Agent struct {
-	config     *Config
-	connection *transport.Connection
-	started    bool
-	mu         sync.RWMutex
+	config        *Config
+	connection    *transport.Connection
+	breakpointMgr *breakpoint.Manager
+	started       bool
+	mu            sync.RWMutex
 
 	// Custom context
 	customContext map[string]interface{}
@@ -71,6 +73,12 @@ func (a *Agent) Start() {
 
 	// Initialize connection
 	a.connection = transport.NewConnection(a.config.BackendURL, a.config.APIKey, a.config.Debug)
+
+	// Initialize breakpoint support
+	if a.config.EnableBreakpoints {
+		a.breakpointMgr = breakpoint.NewManager(a.config.Debug, a.connection)
+		a.connection.SetBreakpointCallback(a.breakpointMgr.HandleCommand)
+	}
 
 	// Connect to backend
 	go a.connection.Connect(context.Background())
@@ -247,6 +255,15 @@ func SetContext(ctx map[string]interface{}) {
 func SetUser(id, email, username string) {
 	if globalAgent != nil {
 		globalAgent.SetUser(id, email, username)
+	}
+}
+
+// Breakpoint triggers a non-breaking breakpoint capture using the global agent.
+// Only captures if the breakpoint ID has been registered by the backend.
+// Place this call at locations where you want to capture context.
+func Breakpoint(id string) {
+	if globalAgent != nil && globalAgent.breakpointMgr != nil {
+		globalAgent.breakpointMgr.Hit(id)
 	}
 }
 

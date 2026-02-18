@@ -21,6 +21,7 @@ type Config struct {
 	MaxStringLength   int
 	MaxCollectionSize int
 	Debug             bool
+	EnableBreakpoints bool
 	Hostname          string
 	AgentID           string
 }
@@ -36,6 +37,7 @@ func NewConfig(options ...ConfigOption) *Config {
 		MaxStringLength:   getEnvIntOrDefault("AIVORY_MAX_STRING_LENGTH", 1000),
 		MaxCollectionSize: getEnvIntOrDefault("AIVORY_MAX_COLLECTION_SIZE", 100),
 		Debug:             getEnvOrDefault("AIVORY_DEBUG", "false") == "true",
+		EnableBreakpoints: getEnvOrDefault("AIVORY_ENABLE_BREAKPOINTS", "true") == "true",
 	}
 
 	// Generate hostname
@@ -91,6 +93,13 @@ func WithSamplingRate(rate float64) ConfigOption {
 func WithDebug(debug bool) ConfigOption {
 	return func(c *Config) {
 		c.Debug = debug
+	}
+}
+
+// WithEnableBreakpoints enables or disables breakpoint support.
+func WithEnableBreakpoints(enable bool) ConfigOption {
+	return func(c *Config) {
+		c.EnableBreakpoints = enable
 	}
 }
 

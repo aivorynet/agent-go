@@ -29,6 +29,8 @@ type Connection struct {
 
 	messageQueue chan []byte
 	done         chan struct{}
+
+	breakpointCallback func(string, interface{})
 }
 
 // Message represents a WebSocket message.
@@ -111,6 +113,17 @@ func (c *Connection) Disconnect() {
 // SendException sends an exception capture to the backend.
 func (c *Connection) SendException(exc *capture.ExceptionCapture) {
 	c.send("exception", exc)
+}
+
+// SendBreakpointHit sends a breakpoint hit to the backend.
+func (c *Connection) SendBreakpointHit(breakpointID string, payload map[string]interface{}) {
+	payload["breakpoint_id"] = breakpointID
+	c.send("breakpoint_hit", payload)
+}
+
+// SetBreakpointCallback registers a callback for breakpoint commands.
+func (c *Connection) SetBreakpointCallback(callback func(string, interface{})) {
+	c.breakpointCallback = callback
 }
 
 // IsConnected returns true if connected and authenticated.
@@ -228,6 +241,14 @@ func (c *Connection) handleMessage(data []byte) {
 		c.handleRegistered()
 	case "error":
 		c.handleError(msg.Payload)
+	case "set_breakpoint":
+		if c.breakpointCallback != nil {
+			c.breakpointCallback("set", msg.Payload)
+		}
+	case "remove_breakpoint":
+		if c.breakpointCallback != nil {
+			c.breakpointCallback("remove", msg.Payload)
+		}
 	default:
 		if c.debug {
 			log.Printf("[AIVory Monitor] Unhandled message type: %s", msg.Type)
