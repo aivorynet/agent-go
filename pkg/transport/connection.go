@@ -167,7 +167,7 @@ func (c *Connection) authenticate() {
 
 	payload := map[string]interface{}{
 		"api_key":       c.apiKey,
-		"agent_version": "1.0.0",
+		"agent_version": "0.1.1",
 		"hostname":      hostname,
 		"runtime":       "go",
 	}

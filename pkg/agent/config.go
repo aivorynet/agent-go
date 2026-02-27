@@ -30,7 +30,7 @@ type Config struct {
 func NewConfig(options ...ConfigOption) *Config {
 	cfg := &Config{
 		APIKey:            getEnvOrDefault("AIVORY_API_KEY", ""),
-		BackendURL:        getEnvOrDefault("AIVORY_BACKEND_URL", "wss://api.aivory.net/ws/agent"),
+		BackendURL:        getEnvOrDefault("AIVORY_BACKEND_URL", "wss://api.aivory.net/monitor/agent"),
 		Environment:       getEnvOrDefault("AIVORY_ENVIRONMENT", "production"),
 		SamplingRate:      getEnvFloatOrDefault("AIVORY_SAMPLING_RATE", 1.0),
 		MaxCaptureDepth:   getEnvIntOrDefault("AIVORY_MAX_DEPTH", 10),

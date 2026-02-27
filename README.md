@@ -153,7 +153,7 @@ agent.SetContext(map[string]interface{}{
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `AIVORY_API_KEY` | Agent authentication key | Required |
-| `AIVORY_BACKEND_URL` | Backend WebSocket URL | `wss://api.aivory.net/ws/agent` |
+| `AIVORY_BACKEND_URL` | Backend WebSocket URL | `wss://api.aivory.net/monitor/agent` |
 | `AIVORY_ENVIRONMENT` | Environment name | `production` |
 | `AIVORY_SAMPLING_RATE` | Exception sampling (0-1) | `1.0` |
 | `AIVORY_MAX_DEPTH` | Variable capture depth | `10` |
@@ -169,7 +169,7 @@ agent.Init(
     agent.WithAPIKey("your-api-key"),
 
     // Optional
-    agent.WithBackendURL("wss://api.aivory.net/ws/agent"),
+    agent.WithBackendURL("wss://api.aivory.net/monitor/agent"),
     agent.WithEnvironment("staging"),
     agent.WithSamplingRate(0.5),        // Sample 50% of errors
     agent.WithDebug(true),              // Enable debug logs
