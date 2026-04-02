@@ -17,6 +17,7 @@ import (
 type Connection struct {
 	url       string
 	apiKey    string
+	agentID   string
 	debug     bool
 	conn      *websocket.Conn
 	connected bool
@@ -41,10 +42,11 @@ type Message struct {
 }
 
 // NewConnection creates a new connection.
-func NewConnection(url, apiKey string, debug bool) *Connection {
+func NewConnection(url, apiKey, agentID string, debug bool) *Connection {
 	return &Connection{
 		url:                  url,
 		apiKey:               apiKey,
+		agentID:              agentID,
 		debug:                debug,
 		maxReconnectAttempts: 10,
 		reconnectDelay:       time.Second,
@@ -118,6 +120,7 @@ func (c *Connection) SendException(exc *capture.ExceptionCapture) {
 // SendBreakpointHit sends a breakpoint hit to the backend.
 func (c *Connection) SendBreakpointHit(breakpointID string, payload map[string]interface{}) {
 	payload["breakpoint_id"] = breakpointID
+	payload["agent_id"] = c.agentID
 	c.send("breakpoint_hit", payload)
 }
 
@@ -167,7 +170,7 @@ func (c *Connection) authenticate() {
 
 	payload := map[string]interface{}{
 		"api_key":       c.apiKey,
-		"agent_version": "0.1.1",
+		"agent_version": "0.1.2",
 		"hostname":      hostname,
 		"runtime":       "go",
 	}

@@ -72,7 +72,7 @@ func (a *Agent) Start() {
 	}
 
 	// Initialize connection
-	a.connection = transport.NewConnection(a.config.BackendURL, a.config.APIKey, a.config.Debug)
+	a.connection = transport.NewConnection(a.config.BackendURL, a.config.APIKey, a.config.AgentID, a.config.Debug)
 
 	// Initialize breakpoint support
 	if a.config.EnableBreakpoints {

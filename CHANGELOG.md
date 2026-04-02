@@ -4,6 +4,12 @@ All notable changes to the AIVory Monitor Go Agent will be documented in this fi
 
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] - 2026-04-02
+
+### Fixed
+- Updated default WebSocket endpoint from `/monitor/agent` to `/ws/agent`
+- Added missing `agent_id` to breakpoint_hit payload
+
 ## [0.1.1] - 2026-02-27
 
 ### Changed
